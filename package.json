@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "typescript": "^3.9.7"
+  },
+  "name": "tech-tests",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/TheWildebeest/tech-tests.git",
+  "author": "David Wildman <59884105+TheWildebeest@users.noreply.github.com>",
+  "license": "MIT"
+}
