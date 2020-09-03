@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clickfest</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      text-align: center;
+      font-style: normal;
+      white-space: nowrap;
+    }
+
+    hgroup {
+      width: inherit;
+      height: max-content;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    hgroup *::after {
+      display: block;
+      font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+      font-size: 30px;
+      margin: 0 auto;
+      content: attr(data-hitpoints);
+    }
+  </style>
+</head>
+
+<body
+  style="background-color: #7b5804; display: flex; flex-direction: column; align-items: center; height: 100vh; width: 100vw;">
+  <section class="divInvaders"
+    style="width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly;">
+    <hgroup class="motherships"></hgroup>
+    <hgroup class="attackships"></hgroup>
+    <hgroup class="defenceships"></hgroup>
+  </section>
+  </article>
+  <button onclick="Player.shoot()" style="height: 100px; width: 160px; font-size: 50px; ">打</button>
+
+  <button style="width: 280px; margin-bottom: 20px;" onclick="startGame()">start over</button>
+  <script>
+    class AlienShip {
+      constructor(hitCapacity, damageInterval, parent, icon) {
+        this.hitPoints = hitCapacity;
+        this.damageInterval = damageInterval;
+        this.parent = parent;
+        this.icon = icon;
+        this.render = () => {
+          document.querySelector(this.parent).innerHTML += `<span data-hitpoints="${this.hitPoints}" data-damageinterval="${this.damageInterval}" class="ship" style="margin: 0 auto; font-size: ${this.hitPoints}px">${this.icon}</span>`
+        }
+      }
+
+    }
+    class MotherShip extends AlienShip {
+      constructor() {
+        super(100, 9, ".motherships", "⺟")
+      }
+      static killAll() {
+        document.querySelectorAll(".ship").forEach((ship) => { ship.remove() });
+      }
+    }
+    class DefenceShip extends AlienShip {
+      constructor() {
+        super(80, 10, ".defenceships", "⼠")
+      }
+
+    }
+    class AttackShip extends AlienShip {
+      constructor() {
+        super(45, 12, ".attackships", "击")
+      }
+    }
+
+    const Player = {
+      shoot: function () {
+        const alienShips = document.querySelectorAll(".ship");
+        const targetIndex = (Math.floor(alienShips.length * Math.random()));
+        const targetShip = alienShips[targetIndex];
+        const hitPoints = targetShip.getAttribute("data-hitpoints")
+        const damageInterval = targetShip.getAttribute("data-damageinterval");
+
+        targetShip.setAttribute("data-hitpoints", hitPoints - damageInterval);
+        targetShip.style.fontSize = `${hitPoints - damageInterval}px`;
+
+        if (targetShip.getAttribute("data-hitpoints") < 1) {
+          if ((targetShip.getAttribute("data-damageinterval") == 9) || !alienShips) {
+            MotherShip.killAll();
+            alert("Game Over")
+          }
+          targetShip.remove();
+        };
+      }
+    }
+
+    const startGame = () => {
+
+
+// global array of ships
+// ships.push(ships)
+// ships.forEach ....
+// .. render the ship
+// position of DOM nodes === position in array
+
+
+
+      const motherShip = new MotherShip();
+      const attackShip = new AttackShip;
+      const defenceShip = new DefenceShip;
+
+      MotherShip.killAll();
+      motherShip.render();
+
+      for (let i = 0; i < 8; i++) {
+        attackShip.render();
+      }
+
+      for (let i = 0; i < 5; i++) {
+        defenceShip.render();
+      }
+      const alienShips = document.querySelectorAll(".ship");
+    }
+  </script>
+</body>
+
+</html>
